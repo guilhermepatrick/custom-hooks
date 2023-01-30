@@ -185,18 +185,18 @@ Agora com o nosso código organizado, sabemos podemos executar o `fetch` dessas 
 ```
 ### Após a refatoração:
 ```js
-import './App.css';
-import useFetchData from './hooks/useFetchData';
-
-function App() {
-const [dogData, catData] = useFetchData();
-
-  return (
-    <div>
-      {dogData.map((dog)=> <img key={dog} src={dog.url} alt="Dog" /> )}
-      {catData.map((cat)=> <img key={cat} src={cat.url} alt="Cat" /> )}
-    </div>
-  );
-}
-export default App;
+1 import './App.css';
+2 import useFetchData from './hooks/useFetchData';
+3
+4 function App() {
+5 const [dogData, catData] = useFetchData();
+6 
+7 return (
+8   <div>
+9     {dogData.map((dog)=> <img key={dog} src={dog.url} alt="Dog" /> )}
+10    {catData.map((cat)=> <img key={cat} src={cat.url} alt="Cat" /> )}
+11  </div>
+12 );
+13 }
+14 export default App;
 ```
