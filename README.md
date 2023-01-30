@@ -113,3 +113,90 @@ Por fim nas linha 24 , o hook retorna o array `[dogData, catData]`, permitindo q
 
 Na linha 27, o `hook` é exportado para ser usado em outros componentes.
 
+### Refatorando o código para usar nosso custom hook
+Com nosso `hook` pronto, estamos prontos para a refatoração, isolamos toda a lógica que faz o `fetch` no hook `useFetchData`, que por sua vez nos retorna um array com a `dogData` e `catData`. Começamos importanto o hook para o componente:
+``` js
+ import useFetchData from './hooks/useFetchData';
+```
+Agora vamos substituir toda a lógica de `fetch` e os estados que criamos usando o `useState`.
+##### Então todo esse codigo:
+
+```js
+const fetchDog=()=>{
+  fetch("https://api.thedogapi.com/v1/images/search")
+  .then((res) => res.json())
+  .then((data) => setDogData(data));    
+}
+const fetchCat=()=>{
+  fetch("https://api.thecatapi.com/v1/images/search")
+  .then((res) => res.json())
+  .then((data) => setCatData(data));       
+}
+useEffect(()=>{
+  fetchDog()
+  fetchCat()
+},[])
+```
+Será sobrescrito por apenas essa linha, que trás para o componente toda a informação obtida pelo hook `useFetchData`
+```js
+const [dogData, catData] = useFetchData();
+```
+Por fim, ajustamos os nomes das variáveis que estão dentro do retorno para serem renderizadas corretamente usando utilizando o método `map`
+```js
+return (
+    <div>
+      {dogData.map((dog)=> <img key={dog} src={dog.url} alt="Dog" /> )}
+      {catData.map((cat)=> <img key={cat} src={cat.url} alt="Cat" /> )}
+    </div>
+  );
+}
+```
+Agora com o nosso código organizado, sabemos podemos executar o `fetch` dessas informacoes a partir de ***qualquer*** componente.
+### Antes da refatoração o código estava assim :
+```js
+1     import { useEffect, useState } from 'react';
+2     
+3     function App() {
+4     const [useCatData, setCatData] = useState([])
+5     const [useDogData, setDogData] = useState([])
+6     
+7     const fetchDog=()=>{
+8       fetch("https://api.thedogapi.com/v1/images/search")
+9       .then((res) => res.json())
+10       .then((data) => setDogData(data));    
+11     }
+12     const fetchCat=()=>{
+13       fetch("https://api.thecatapi.com/v1/images/search")
+14       .then((res) => res.json())
+15       .then((data) => setCatData(data));       
+16     }
+17     useEffect(()=>{
+18       fetchDog()
+19       fetchCat()
+20     },[])
+21       return (
+22         <div className='content'>
+23           {useDogData.map((dog)=> <img key={dog} src={dog.url} alt="Dog" /> )}
+24           {useCatData.map((cat)=> <img key={cat} src={cat.url} alt="Cat" /> )}
+25         </div>
+26       );
+27     }
+28     export default App;
+```
+### Após a refatoração:
+```js
+import './App.css';
+import useFetchData from './hooks/useFetchData';
+
+function App() {
+const [dogData, catData] = useFetchData();
+
+  return (
+    <div>
+      {dogData.map((dog)=> <img key={dog} src={dog.url} alt="Dog" /> )}
+      {catData.map((cat)=> <img key={cat} src={cat.url} alt="Cat" /> )}
+    </div>
+  );
+}
+export default App;
+```
