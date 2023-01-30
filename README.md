@@ -60,4 +60,56 @@ Ao analisar o código, vemos que podemos colocar as duas funções de `fetch` qu
 - Nome: Inicie com `use` seguido do nome da funcionalidade, ex: "**use**FetchData".
 - Custom Hooks **devem manipular** outros hooks, caso contrário são meras funçoes JavaScript
 
-Sabendo dessas regras, estamos prontos para criar o nosso primeiro custom hook
+Sabendo dessas regras, estamos prontos para criar o nosso primeiro custom hook.
+Para manter nossos hooks organizados, precisamos criar uma pasta chamada **"hooks"** no diretório do nosso projeto. Desta forma, poderemos manter todos os `hooks` que criarmos durante o desenvolvimento do código em um único local, facilitando a **navegação e manutenção do código**.
+
+![i](https://imageup.me/images/c13d6772-4aea-4e1f-b1e3-49c1d6424ce5.jpeg)
+
+E seguindo a regra de nomenclatura, criamos o hook **useFetchData.js**
+### Estrutura do custom Hook
+```js
+1 import { useState, useEffect } from 'react';
+2
+3 const useFetchData = () => {
+4   const [dogData, setDogData] = useState([]);
+5   const [catData, setCatData] = useState([]);
+6
+7   useEffect(() => {
+8     const fetchDog = () => {
+9       fetch("https://api.thedogapi.com/v1/images/search")
+10         .then((res) => res.json())
+11         .then((data) => setDogData(data));
+12     };
+13
+14     const fetchCat = () => {
+15       fetch("https://api.thecatapi.com/v1/images/search")
+16         .then((res) => res.json())
+17         .then((data) => setCatData(data));
+18     };
+19
+20     fetchDog();
+21     fetchCat();
+22   }, []);
+23
+24   return [dogData, catData];
+25 };
+26
+27 export default useFetchData;
+```
+
+> Obs  💡 : Lembrando da nossa segunda regrinha na criação do custom hook. Eles devem manipular outros hooks, tendo isso em mente vamos para a análise do código.
+
+Na linha 4 e 5, dois estados são criados usando o hook `useState` para armazenar as informações dos cães e gatos, respectivamente. 
+
+Na linha 7, o hook `useEffect` é usado para garantir que a busca dos dados ocorra apenas uma vez (com o array vazio na segunda argumento).
+
+Na linha 8 a 12, é criada uma função `fetchDog` que realiza o fetch dos dados da API de cães e atualiza o estado de `dogData`.
+
+Na linha 14 a 18, é criada uma função semelhante `fetchCat` para buscar os dados da API de gatos.
+
+Na linha 20 e 21, as duas funções são chamadas.
+
+Por fim nas linha 24 , o hook retorna o array `[dogData, catData]`, permitindo que as informações sejam acessadas em outros componentes. Este hook pode ser importado e reutilizado em outros componentes da aplicação, garantindo a organização e a centralização da lógica de busca de informações.
+
+Na linha 27, o `hook` é exportado para ser usado em outros componentes.
+
