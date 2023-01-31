@@ -316,3 +316,24 @@ const [dogData, catData] = useFetchData();
 }
 export default App;
 ```
+# Vamos praticar !
+
+### Desafio 01 - Considerando o código abaixo , crie o hook `isToogle` para gerenciar o estado de visibilidade da imagem.
+
+```js
+import React, { useState } from 'react';
+
+const Message = () => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  return (
+    <div>
+      {isVisible && <p>Esta é uma mensagem qualquer.</p>}
+      <button onClick={() => setIsVisible(!isVisible)}>
+        {isVisible ? 'Esconder' : 'Mostrar'} mensagem
+      </button>
+    </div>
+  );
+};
+export default Message;
+```
