@@ -42,8 +42,6 @@ Os hooks do React são uma ferramenta valiosa, e às vezes as necessidades de um
 ```
 Esse código representa um componente React para um contador de placares. Ele usa o hook `useState` para manter o estado dos placares de dois jogadores. O componente retorna uma estrutura de divisões que exibe os placares dos jogadores e botões para aumentar ou diminuir o placar.
 
-!!!!!!!!!! IMAGEM DA APLICACAO AQUI !!!!!!!!!
-
 Analisando o código rapidamente, percebemos que as funções que gerenciam os placares são iguais. Portanto, podemos criar um hook personalizado para separar essa lógica do componente.
 ```js
   const [score1, setScore1] = useState(0);
@@ -63,11 +61,7 @@ Analisando o código rapidamente, percebemos que as funções que gerenciam os p
 Sabendo dessas regras e qual lógica queremos isolar em nosso código, estamos prontos para criar o nosso primeiro custom hook.
 Para manter nossos hooks organizados, podemos criar uma pasta chamada **"hooks"** no diretório do nosso projeto. Desta forma, poderemos manter todos os `hooks` que criarmos durante o desenvolvimento do código em um único local, facilitando a **navegação e manutenção do código**.
 
-!!!!!!IMAGEM CRIANDO A PASTA HOOK !!!!!
-
 Tudo certo, vamos criar então o nosso hook `useScore`, respeitando assim a regra de nomenclatura.
-
-!!!!!!IMAGEM CRIANDO o arquivo useScore.js !!!!!
 
 Após criação do arquivo js, vamos à estrutura do código. Lembrando da nossa segunda regra, o nosso hook deve manipular outros hooks, nesse caso será o hook `useState`.
 ```js
@@ -109,9 +103,6 @@ O primeiro passo para refatorar o nosso código é importar o hook que criamos p
 import useScore from './hooks/useScore';
 ```
 Agora podemos deletar sem medo toda a lógica de manipulação de estado que está presente nesse componente. Vamos substituir esses estados por novos estados manipulados pelo hook `useScore`.
-
-!!!!!!! GIF DELETANDO A LOGICA !!!!!!
-
 ```JS
 const [score1, incrementScore1, decrementScore1] = useScore();
 const [score2, incrementScore2, decrementScore2] = useScore();
@@ -144,7 +135,7 @@ O restante do componente mántem sua mesma estrutura, seu código final terá o 
 24 
 25 export default Score;
 ```
-Com isso criamos nosso primeiro hook, deixamos nosso código organizado e limpo, agora qualquer componente  na nossa aplicação consegue acessar de maneira rápida e fácil a lógica de score que isolamos no hook `useScore`.
+Com isso criamos nosso primeiro hook, deixamos nosso código organizado e limpo, e agora qualquer componente  na nossa aplicação consegue acessar de maneira rápida e fácil a lógica de score que isolamos no hook `useScore`.
 
 ## Utilizando hooks para fazer chamadas à APIs
 >Custom Hooks são recursos poderosos que permitem reutilizar código para realizar requisições de API. Eles tornam mais fácil e eficiente realizar várias chamadas de API, sejam elas na mesma API ou em diferentes APIs.
