@@ -8,7 +8,145 @@ Hoje você irá aprender sobre a criação de hooks personalizados no React! Iss
 ### Por que isso é importante:
 Os hooks do React são uma ferramenta valiosa, e às vezes as necessidades de uma aplicação web exigem soluções personalizadas. Os custom hooks permitem que você reutilize código comum entre componentes, eles também permitem que você compartilhe funcionalidades entre componentes sem ter que passar props complexas ou escrever código repetitivo.
 
-## Utilizando um custom Hook na prática
+### Vamos para nossa aplicação
+```js
+1 import React, { useState } from 'react';
+2 import './Score.css';
+3 
+4 const Score = () => {
+5   const [score1, setScore1] = useState(0);
+6   const [score2, setScore2] = useState(0);
+7 
+8   const incrementScore1 = () => setScore1(score1 + 1);
+9   const decrementScore1 = () => setScore1(score1 - 1);
+10  const incrementScore2 = () => setScore2(score2 + 1);
+11  const decrementScore2 = () => setScore2(score2 - 1);
+12 
+13  return (
+14    <div className="score-container">
+15      <div className="player">
+16        <p>Jogador 1: {score1} pts</p>
+17        <button onClick={incrementScore1}>+1 Ponto</button>
+18        <button onClick={decrementScore1}>-1 Ponto</button>
+19      </div>
+20      <div className="player">
+21        <p>Jogador 2: {score2} pts</p>
+22        <button onClick={incrementScore2}>+1 Ponto</button>
+23        <button onClick={decrementScore2}>-1 Ponto</button>
+24      </div>
+25    </div>
+26  );
+27 };
+28 
+29 export default Score;
+```
+Esse código representa um componente React para um contador de placares. Ele usa o hook `useState` para manter o estado dos placares de dois jogadores. O componente retorna uma estrutura de divisões que exibe os placares dos jogadores e botões para aumentar ou diminuir o placar.
+
+!!!!!!!!!! IMAGEM DA APLICACAO AQUI !!!!!!!!!
+
+Analisando o código rapidamente, percebemos que as funções que gerenciam os placares são iguais. Portanto, podemos criar um hook personalizado para separar essa lógica do componente.
+```js
+  const [score1, setScore1] = useState(0);
+  const [score2, setScore2] = useState(0);
+
+  const incrementScore1 = () => setScore1(score1 + 1);
+  const decrementScore1 = () => setScore1(score1 - 1);
+  const incrementScore2 = () => setScore2(score2 + 1);
+  const decrementScore2 = () => setScore2(score2 - 1);
+```
+## Criando o custom Hook
+>**Atenção** 💡 : Temos algumas regrinhas na hora de criar nosso hook :
+
+- Nome: Inicie com `use` seguido do nome da funcionalidade, ex: "**use**Score".
+- Custom Hooks **devem manipular** outros hooks, caso contrário são meras funçoes JavaScript
+
+Sabendo dessas regras e qual lógica queremos isolar em nosso código, estamos prontos para criar o nosso primeiro custom hook.
+Para manter nossos hooks organizados, podemos criar uma pasta chamada **"hooks"** no diretório do nosso projeto. Desta forma, poderemos manter todos os `hooks` que criarmos durante o desenvolvimento do código em um único local, facilitando a **navegação e manutenção do código**.
+
+!!!!!!IMAGEM CRIANDO A PASTA HOOK !!!!!
+
+Tudo certo, vamos criar então o nosso hook `useScore`, respeitando assim a regra de nomenclatura.
+
+!!!!!!IMAGEM CRIANDO o arquivo useScore.js !!!!!
+
+Após criação do arquivo js, vamos à estrutura do código. Lembrando da nossa segunda regra, o nosso hook deve manipular outros hooks, nesse caso será o hook `useState`.
+```js
+1 import { useState } from 'react';
+2
+3 const useScore = () => {
+4 const [score, setScore] = useState(0);
+```
+Então implementamos a lógica de `incrementScore` e `decrementScore` usando a função de manipulção de estado `setScore` que criamos na **linha 4**
+```js
+const incrementScore = () => setScore(score + 1);
+const decrementScore = () => setScore(score - 1);
+```
+Por fim fazemos o `return`, que irá retornar para o componente onde for chamado um array com as seguintes informações:
+- O estado atual de `score`
+- A função que incrementa
+- A função que decrementa
+```js
+return [score, incrementScore, decrementScore];
+```
+o Código completo do nosso hook `useScore` no final das implementações então ficará assim:
+```js
+1 import { useState } from 'react';
+2 
+3 const useScore = () => {
+4 const [score, setScore] = useState(0);
+5 
+6 const incrementScore = () => setScore(score + 1);
+7 const decrementScore = () => setScore(score - 1);
+8 
+9 return [score, incrementScore, decrementScore];
+10 };
+11 
+12 export default useScore;
+```
+# Refatorando o código para usar nosso hook
+O primeiro passo para refatorar o nosso código é importar o hook que criamos para o componente.
+```js
+import useScore from './hooks/useScore';
+```
+Agora podemos deletar sem medo toda a lógica de manipulação de estado que está presente nesse componente. Vamos substituir esses estados por novos estados manipulados pelo hook `useScore`.
+
+!!!!!!! GIF DELETANDO A LOGICA !!!!!!
+
+```JS
+const [score1, incrementScore1, decrementScore1] = useScore();
+const [score2, incrementScore2, decrementScore2] = useScore();
+```
+O restante do componente mántem sua mesma estrutura, seu código final terá o seguinte formato:
+```js
+1 import React from 'react';
+2 import useScore from './hooks/useScore';
+3 import './Score.css';
+4 
+5 const Score = () => {
+6 const [score1, incrementScore1, decrementScore1] = useScore();
+7 const [score2, incrementScore2, decrementScore2] = useScore();
+8 
+9 return (
+10 <div className="score-container">
+11   <div className="player">
+12     <p>Jogador 1: {score1} pts</p>
+13     <button onClick={incrementScore1}>+1 Ponto</button>
+14     <button onClick={decrementScore1}>-1 Ponto</button>
+15   </div>
+16   <div className="player">
+17     <p>Jogador 2: {score2} pts</p>
+18     <button onClick={incrementScore2}>+1 Ponto</button>
+19     <button onClick={decrementScore2}>-1 Ponto</button>
+20   </div>
+21 </div>
+22 );
+23 };
+24 
+25 export default Score;
+```
+Com isso criamos nosso primeiro hook, deixamos nosso código organizado e limpo, agora qualquer componente  na nossa aplicação consegue acessar de maneira rápida e fácil a lógica de score que isolamos no hook `useScore`.
+
+## Utilizando hooks para fazer chamadas à APIs
 >Custom Hooks são recursos poderosos que permitem reutilizar código para realizar requisições de API. Eles tornam mais fácil e eficiente realizar várias chamadas de API, sejam elas na mesma API ou em diferentes APIs.
 #### Considere o seguinte código:
 ```js
@@ -52,21 +190,11 @@ Na linha 17, o hook `useEffect` é usado para fazer a requisição inicial de am
 
 Por fim, o componente renderiza uma div content na linha 22, e dentro dela duas listas de imagens, uma para gatos e outra para cães. As imagens são renderizadas usando o map para percorrer o estado `useCatData` e `useDogData`, e renderizar uma imagem para cada item da lista, com a URL da imagem como fonte.
 
-### Criando um custom Hook
+### Criando o Hook
 Ao analisar o código, vemos que podemos colocar as duas funções de `fetch` que buscam as informações das APIs em um `hook` personalizado. Isso significa que podemos separar a lógica de busca e usá-la em **outros componentes** conforme a nossa aplicação cresce, tornando o nosso código mais organizado e fácil de manter.
 
->**Atenção** 💡 : Temos algumas regrinhas na hora de criar nosso hook personalizado:
-
-- Nome: Inicie com `use` seguido do nome da funcionalidade, ex: "**use**FetchData".
-- Custom Hooks **devem manipular** outros hooks, caso contrário são meras funçoes JavaScript
-
-Sabendo dessas regras, estamos prontos para criar o nosso primeiro custom hook.
-Para manter nossos hooks organizados, precisamos criar uma pasta chamada **"hooks"** no diretório do nosso projeto. Desta forma, poderemos manter todos os `hooks` que criarmos durante o desenvolvimento do código em um único local, facilitando a **navegação e manutenção do código**.
-
-![i](https://imageup.me/images/c13d6772-4aea-4e1f-b1e3-49c1d6424ce5.jpeg)
-
 E seguindo a regra de nomenclatura, criamos o hook **useFetchData.js**
-### Estrutura do custom Hook
+### Estrutura do useFetchData.js
 ```js
 1 import { useState, useEffect } from 'react';
 2
@@ -96,9 +224,6 @@ E seguindo a regra de nomenclatura, criamos o hook **useFetchData.js**
 26
 27 export default useFetchData;
 ```
-
-> Obs  💡 : Lembrando da nossa segunda regrinha na criação do custom hook. Eles devem manipular outros hooks, tendo isso em mente vamos para a análise do código.
-
 Na linha 4 e 5, dois estados são criados usando o hook `useState` para armazenar as informações dos cães e gatos, respectivamente. 
 
 Na linha 7, o hook `useEffect` é usado para garantir que a busca dos dados ocorra apenas uma vez (com o array vazio na segunda argumento).
@@ -185,18 +310,18 @@ Agora com o nosso código organizado, sabemos podemos executar o `fetch` dessas 
 ```
 ### Após a refatoração:
 ```js
-1 import './App.css';
-2 import useFetchData from './hooks/useFetchData';
-3
-4 function App() {
-5 const [dogData, catData] = useFetchData();
-6 
-7 return (
-8   <div>
-9     {dogData.map((dog)=> <img key={dog} src={dog.url} alt="Dog" /> )}
-10    {catData.map((cat)=> <img key={cat} src={cat.url} alt="Cat" /> )}
-11  </div>
-12 );
-13 }
-14 export default App;
+import './App.css';
+import useFetchData from './hooks/useFetchData';
+
+function App() {
+const [dogData, catData] = useFetchData();
+
+  return (
+    <div>
+      {dogData.map((dog)=> <img key={dog} src={dog.url} alt="Dog" /> )}
+      {catData.map((cat)=> <img key={cat} src={cat.url} alt="Cat" /> )}
+    </div>
+  );
+}
+export default App;
 ```
