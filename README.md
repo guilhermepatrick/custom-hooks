@@ -217,7 +217,7 @@ E seguindo a regra de nomenclatura, criamos o hook **useFetchData.js**
 ```
 Na linha 4 e 5, dois estados são criados usando o hook `useState` para armazenar as informações dos cães e gatos, respectivamente. 
 
-Na linha 7, o hook `useEffect` é usado para garantir que a busca dos dados ocorra apenas uma vez (com o array vazio na segunda argumento).
+Na linha 7, o hook `useEffect` é usado para garantir que a busca dos dados ocorra apenas uma vez (com o array vazio no segundo argumento).
 
 Na linha 8 a 12, é criada uma função `fetchDog` que realiza o fetch dos dados da API de cães e atualiza o estado de `dogData`.
 
@@ -318,7 +318,7 @@ export default App;
 ```
 # Vamos praticar !
 
-### Desafio 01 - Considerando o código abaixo , crie o hook `isToogle` para gerenciar o estado de visibilidade da imagem.
+### Desafio 01 - Considerando o código abaixo , crie o hook `useToogle` para gerenciar os estados.
 
 ```js
 import React, { useState } from 'react';
@@ -337,3 +337,51 @@ const Message = () => {
 };
 export default Message;
 ```
+### Desafio 02 - Implemente o hook `useToogle` criado no desafio 01.
+
+### Desafio 03 - Crie e implemente um hook para a seguinte aplicação: 
+```js
+import React, { useState } from 'react';
+
+const TodoList = () => {
+  const [todos, setTodos] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setTodos([...todos, inputValue]);
+    setInputValue('');
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(event) => setInputValue(event.target.value)}
+        />
+        <button type="submit">Adicionar tarefa</button>
+      </form>
+      <ul>
+        {todos.map((todo, index) => (
+          <li key={index}>{todo}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default TodoList;
+```
+# Fixando o conhecimento
+### 1- O que é um custom hook?
+a) Um custom hook é um tipo de componente do React.
+b) Um custom hook é uma função JavaScript normal que é usada para adicionar funcionalidades adicionais aos componentes.
+c) Um custom hook é uma ferramenta de gerenciamento de estado do React que permite compartilhar lógica entre vários componentes.
+d) Um custom hook é uma forma de escrever CSS mais avançado para o React.
+### 2- Qual é a diferença entre um custom hook e um hook padrão do React?
+a) Não há diferença, eles são a mesma coisa.
+b) Custom hooks são hooks criados por terceiros, enquanto hooks padrão são criados pelo time do React.
+c) Hooks padrão não podem ser reutilizados, enquanto custom hooks podem ser.
+d) Hooks padrão não podem ser personalizados, enquanto custom hooks podem ser.
