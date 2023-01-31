@@ -70,7 +70,7 @@ Após criação do arquivo js, vamos à estrutura do código. Lembrando da nossa
 3 const useScore = () => {
 4 const [score, setScore] = useState(0);
 ```
-Então implementamos a lógica de `incrementScore` e `decrementScore` usando a função de manipulção de estado `setScore` que criamos na **linha 4**
+Então implementamos a lógica de `incrementScore` e `decrementScore` usando a função de manipulação de estado `setScore` que criamos na **linha 4**
 ```js
 const incrementScore = () => setScore(score + 1);
 const decrementScore = () => setScore(score - 1);
@@ -374,14 +374,32 @@ const TodoList = () => {
 
 export default TodoList;
 ```
-# Fixando o conhecimento
+# Fixando o conteúdo
 ### 1- O que é um custom hook?
 a) Um custom hook é um tipo de componente do React.
 b) Um custom hook é uma função JavaScript normal que é usada para adicionar funcionalidades adicionais aos componentes.
 c) Um custom hook é uma ferramenta de gerenciamento de estado do React que permite compartilhar lógica entre vários componentes.
 d) Um custom hook é uma forma de escrever CSS mais avançado para o React.
+
 ### 2- Qual é a diferença entre um custom hook e um hook padrão do React?
 a) Não há diferença, eles são a mesma coisa.
 b) Custom hooks são hooks criados por terceiros, enquanto hooks padrão são criados pelo time do React.
 c) Hooks padrão não podem ser reutilizados, enquanto custom hooks podem ser.
 d) Hooks padrão não podem ser personalizados, enquanto custom hooks podem ser.
+
+### 3- Considere as seguintes afirmativas, depois assinale qual opção que demonstra as afirmativas corretas.
+I- Custom hooks tornam o código mais lento
+II- Custom hooks só podem ser usados em componentes funcionais
+III- Custom hooks só funcionam com componentes de primeiro nível
+IV- Custom hooks permitem a reutilização de lógica
+
+a) II e IV
+b) Apenas IV
+c) II, III e IV
+d) I e III
+
+###
+
+# Recursos Adicionais
+- Documentação oficial sobre custom hooks: https://www.w3schools.com/react/react_customhooks.asp
+- Exemplos de Custom Hooks: https://usehooks.com/
